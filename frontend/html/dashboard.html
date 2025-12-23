@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд - VM Мониторинг</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>VM Monitor</h1>
+            <p>ESXi Мониторинг</p>
+        </div>
+        <nav class="menu">
+            <a href="dashboard.html" class="menu-item active">
+                <span>Дашборд</span>
+            </a>
+            <a href="table.html" class="menu-item">
+                <span>Аудит</span>
+            </a>
+            <a href="users.html" class="menu-item">
+                <span>Пользователи</span>
+            </a>
+        </nav>
+        <a href="login.html" class="logout-btn">
+            <span>Выйти</span>
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h2>Дашборд мониторинга VM</h2>
+            <div class="header-controls">
+                <div class="host-selector-container">
+                    <select class="host-selector" id="hostSelector">
+                        <option value="all">Все хосты</option>
+
+                    </select>
+                    <div class="host-status" id="hostStatus">
+                        <span class="status-indicator status-disconnected"></span>
+                        <span class="status-text">Выберите хост</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="addVmBtn">
+                    + Создать VM
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">Общая статистика</h3>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Всего VM</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Активных VM</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Средняя CPU</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">0 GB</div>
+                    <div class="stat-label">Используется RAM</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">Метрики производительности</h3>
+            <select class="vm-selector" id="vmSelector">
+                <option>Все VM</option>
+
+            </select>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">VM CPU Использование</div>
+                        <div class="chart-time">Загрузка...</div>
+                    </div>
+                    <canvas id="cpuChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">VM RAM Использование</div>
+                        <div class="chart-time">Загрузка...</div>
+                    </div>
+                    <canvas id="ramChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">VM ROM Использование</div>
+                        <div class="chart-time">Загрузка...</div>
+                    </div>
+                    <canvas id="romChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">Виртуальные машины</h3>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Имя VM</th>
+                            <th>Статус</th>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>ROM</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vmTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 30px; color: #718096;">
+                                Загрузка данных...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно создания VM -->
+    <div id="addVmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Создать виртуальную машину</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="addVmForm">
+                <div class="form-group">
+                    <label>Имя VM:</label>
+                    <input type="text" class="form-control" id="vmName" 
+                           placeholder="Web Server" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CPU (ядра):</label>
+                        <input type="number" class="form-control" id="vmCpu" 
+                               min="1" max="32" value="2" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>RAM (GB):</label>
+                        <input type="number" class="form-control" id="vmRam" 
+                               min="1" max="256" value="4" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ROM (GB):</label>
+                        <input type="number" class="form-control" id="vmRom" 
+                               min="10" max="4096" value="50" required>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Создать VM</button>
+                    <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editVmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Изменение конфигурации VM</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="editVmForm">
+                <input type="hidden" id="editVmId">
+                
+                <div class="form-group">
+                    <label>Имя VM:</label>
+                    <input type="text" class="form-control" id="editVmName" 
+                           placeholder="Web Server" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CPU (ядра):</label>
+                        <input type="number" class="form-control" id="editVmCpu" 
+                               min="1" max="32" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>RAM (GB):</label>
+                        <input type="number" class="form-control" id="editVmRam" 
+                               min="1" max="256" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ROM (GB):</label>
+                        <input type="number" class="form-control" id="editVmRom" 
+                               min="10" max="4096" required>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../routes/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: vm_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  backend:
+    build: ./backend
+    container_name: backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_NAME: vm_db
+      DB_USER: admin
+      DB_PASS: admin
+      DB_PORT: 5432
+      JWT_SECRET: your-super-secret-jwt-key
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep node || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    command: npm run dev
+
+  frontend:
+    build: ./frontend
+    container_name: vm-frontend
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx-ssl:/etc/nginx/ssl  
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: >
+      sh -c "
+      echo 'Starting nginx...';
+      nginx -g 'daemon off;'
+      "
+
+volumes:
+  pgdata:

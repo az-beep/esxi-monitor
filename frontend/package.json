@@ -1,0 +1,13 @@
+{
+  "name": "vm-management",
+  "version": "1.0.0",
+  "description": "Frontend для системы мониторинга VM",
+  "scripts": {
+    "start": "live-server --port=3000 --open=/frontend/login.html --https=./ssl/cert.pem --key=./ssl/key.pem --cors",
+    "dev": "live-server --port=3000 --open=/frontend/login.html --https=./ssl/cert.pem --key=./ssl/key.pem --cors",
+    "http": "live-server --port=3000 --open=/frontend/login.html"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
