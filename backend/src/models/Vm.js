@@ -30,7 +30,8 @@ const Vm = sequelize.define("Vm", {
         type: DataTypes.STRING,
     },
     esxiHostId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER, // ИЗМЕНИЛ С STRING НА INTEGER
+        allowNull: true
     },
     configJson: {
         type: DataTypes.TEXT,

@@ -8,7 +8,7 @@ const authMiddleware = async (req, res, next) => {
             return res.status(401).json({ error: "Доступ запрещен. Токен не предоставлен." });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
+        const decoded = jwt.verify(token, "secret");
         const user = await User.findByPk(decoded.id);
         if (!user) {
             return res.status(401).json({ error: "Пользователь не найден." });

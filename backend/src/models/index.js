@@ -3,25 +3,21 @@ const User = require("./User");
 const EsxiHost = require("./EsxiHost");
 const Vm = require("./Vm");
 const Metric = require("./Metric");
-const ActionLog = require("./ActionLog");
+const EsxiAuditLog = require("./EsxiAuditLog");
 
-// Связи
-EsxiHost.hasMany(Vm, { foreignKey: "esxiHostId", sourceKey: "hostname" });
-Vm.belongsTo(EsxiHost, { foreignKey: "esxiHostId", targetKey: "hostname" });
+// Связи (ИСПРАВЛЕНО)
+EsxiHost.hasMany(Vm, { foreignKey: "esxiHostId" });
+Vm.belongsTo(EsxiHost, { foreignKey: "esxiHostId" });
 
-Vm.hasMany(Metric, { foreignKey: "vmId" });
-Metric.belongsTo(Vm, { foreignKey: "vmId" });
-
-User.hasMany(ActionLog, { foreignKey: "userId" });
-ActionLog.belongsTo(User, { foreignKey: "userId" });
-
-ActionLog.belongsTo(Vm, { foreignKey: "vmId" });
+// Эта связь не нужна, пока нет ActionLog модели
+// User.hasMany(ActionLog, { foreignKey: "userId" });
+// ActionLog.belongsTo(User, { foreignKey: "userId" });
 
 module.exports = {
-    sequelize,
-    User,
-    EsxiHost,
-    Vm,
-    Metric,
-    ActionLog,
+  sequelize,
+  User,
+  EsxiHost,
+  Vm,
+  Metric,
+  EsxiAuditLog
 };
