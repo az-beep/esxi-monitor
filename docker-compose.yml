@@ -35,13 +35,19 @@ services:
     ports:
       - "5000:5000"
     environment:
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_NAME: vm_db
-      DB_USER: admin
-      DB_PASS: admin
-      DB_PORT: 5432
-      JWT_SECRET: your-super-secret-jwt-key
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_NAME=vm_db
+      - DB_USER=admin
+      - DB_PASS=admin
+      - DB_PORT=5432
+      - JWT_SECRET=your-super-secret-jwt-key
+      - ESXI_HOST=${ESXI_HOST:-192.168.1.100}
+      - ESXI_USER=${ESXI_USER:-root}
+      - ESXI_PASSWORD=${ESXI_PASSWORD:-password}
+      - ESXI_PORT=${ESXI_PORT:-443}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
     depends_on:
       postgres:
         condition: service_healthy
@@ -61,7 +67,7 @@ services:
       - "80:80"
     volumes:
       - ./frontend:/usr/share/nginx/html
-      - ./nginx-ssl:/etc/nginx/ssl  
+      - ./nginx-ssl:/etc/nginx/ssl
     depends_on:
       backend:
         condition: service_healthy

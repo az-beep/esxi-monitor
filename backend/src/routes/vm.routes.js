@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const controller = require("../controllers/vm.controller");
+const { authMiddleware } = require("../middlewares/auth.middleware");
 
-router.post("/", controller.createVm);
+// Все маршруты требуют авторизации
+router.use(authMiddleware);
+
+// Только чтение данных
 router.get("/", controller.getAllVms);
 router.get("/:id", controller.getVmById);
-router.put("/:id", controller.updateVm);
-router.delete("/:id", controller.deleteVm);
-router.post("/:id/start", controller.startVm);
-router.post("/:id/stop", controller.stopVm);
+router.get("/:id/live-metrics", controller.getVMLiveMetrics);
 
 module.exports = router;
