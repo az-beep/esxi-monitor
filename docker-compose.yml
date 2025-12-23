@@ -42,12 +42,12 @@ services:
       - DB_PASS=admin
       - DB_PORT=5432
       - JWT_SECRET=your-super-secret-jwt-key
-      - ESXI_HOST=${ESXI_HOST:-192.168.1.100}
-      - ESXI_USER=${ESXI_USER:-root}
-      - ESXI_PASSWORD=${ESXI_PASSWORD:-password}
-      - ESXI_PORT=${ESXI_PORT:-443}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - ESXI_HOST=192.168.56.10
+      - ESXI_USER=root
+      - ESXI_PASSWORD=An0nas_
+      - ESXI_PORT=22
+      - TELEGRAM_BOT_TOKEN=8359101654:AAG95K8Mbi_BmCAn4R5WOe37KijuUXSJMi4
+      - TELEGRAM_CHAT_ID=977325615
     depends_on:
       postgres:
         condition: service_healthy
