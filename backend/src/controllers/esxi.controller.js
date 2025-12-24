@@ -6,7 +6,6 @@ class ESXiController {
     this.client = new ESXiClient();
   }
 
-  // Получить конфигурацию ESXi хоста
   async getESXiConfig(req, res) {
     try {
       await this.client.connect();
@@ -16,7 +15,6 @@ class ESXiController {
         return res.status(404).json({ error: "Конфигурация не получена" });
       }
 
-      // Уведомление в Telegram
       if (telegramNotifier.enabled) {
         telegramNotifier.sendMessage(
           telegramNotifier.formatAlert('esxi_config', {
@@ -38,13 +36,11 @@ class ESXiController {
     }
   }
 
-  // Получить список всех VM
   async getAllVMs(req, res) {
     try {
       await this.client.connect();
       const vms = await this.client.getVMs();
       
-      // Уведомление о количестве VM
       if (telegramNotifier.enabled && vms.length > 0) {
         const running = vms.filter(vm => vm.status === 'running').length;
         telegramNotifier.sendMessage(
@@ -61,7 +57,6 @@ class ESXiController {
     }
   }
 
-  // Получить логи аудита (входы в ESXi)
   async getAuditLogs(req, res) {
     try {
       await this.client.connect();
@@ -93,12 +88,10 @@ class ESXiController {
     }
   }
 
-  // Получить метрики хоста
   async getHostMetrics(req, res) {
     try {
       await this.client.connect();
       
-      // Получаем базовые метрики
       const [cpu, memory, uptime] = await Promise.all([
         this.client.executeCommand("esxtop -b -n 1 | head -5 | tail -1 | awk '{print $100}'").catch(() => "0"),
         this.client.executeCommand("free | grep Mem | awk '{print $3/$2 * 100.0}'").catch(() => "0"),
@@ -119,13 +112,11 @@ class ESXiController {
     }
   }
 
-  // Получить конфигурацию конкретной VM
   async getVMConfig(req, res) {
     try {
       const vmId = req.params.id;
       await this.client.connect();
       
-      // Получаем конфигурацию VM
       const config = await this.client.executeCommand(`vim-cmd vmsvc/get.config ${vmId}`);
       const status = await this.client.executeCommand(`vim-cmd vmsvc/power.getstate ${vmId}`);
       
@@ -136,7 +127,6 @@ class ESXiController {
         timestamp: new Date().toISOString()
       };
 
-      // Уведомление
       if (telegramNotifier.enabled) {
         telegramNotifier.sendMessage(
           `🔍 Получена конфигурация VM ID: ${vmId}\nСтатус: ${vmConfig.status}`

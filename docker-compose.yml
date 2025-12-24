@@ -41,7 +41,7 @@ services:
       - DB_USER=admin
       - DB_PASS=admin
       - DB_PORT=5432
-      - JWT_SECRET=your-super-secret-jwt-key
+      - JWT_SECRET=secret
       - ESXI_HOST=192.168.56.10
       - ESXI_USER=root
       - ESXI_PASSWORD=An0nas_

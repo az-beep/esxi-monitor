@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESXi Monitor - Панель</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="header-left">
+            <h1>ESXi Monitor</h1>
+        </div>
+        <div class="header-right">
+            <span id="userEmail"></span>
+            
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="container">
+        <!-- Управление -->
+        <div class="controls">4
+            <button id="logoutBtn" class="btn btn-logout">Выйти</button>
+            <button id="refreshBtn" class="btn btn-primary">Обновить</button>
+            <button id="syncBtn" class="btn btn-primary">Синхронизировать</button>
+            <span class="status">Обновлено: <span id="lastUpdate">--:--:--</span></span>
+        </div>
+
+        <!-- Информация о хосте -->
+        <div class="host-info">
+            <div class="card">
+                <h2>ESXi Хост</h2>
+                <div id="hostConfig" class="config-grid">
+                    <div class="config-item">
+                        <div class="config-label">Хост</div>
+                        <div class="config-value">Загрузка...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Метрики</h2>
+                <div id="hostMetrics" class="config-grid">
+                    <div class="config-item">
+                        <div class="config-label">Загрузка CPU</div>
+                        <div class="config-value">Загрузка...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица 1: Аудит входа -->
+        <div class="card">
+            <h2>Аудит входа</h2>
+            <div class="pagination">
+                <button id="auditPrevBtn" class="btn">← Назад</button>
+                <span id="auditPageInfo">Страница 1</span>
+                <button id="auditNextBtn" class="btn">Вперед →</button>
+            </div>
+            
+            <div class="table-container">
+                <table id="auditTable">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Пользователь</th>
+                            <th>IP адрес</th>
+                            <th>Действие</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="5">Загрузка данных...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Таблица 2: Виртуальные машины -->
+        <div class="card">
+            <h2>Виртуальные машины</h2>
+            <div class="pagination">
+                <button id="vmsPrevBtn" class="btn">← Назад</button>
+                <span id="vmsPageInfo">Страница 1</span>
+                <button id="vmsNextBtn" class="btn">Вперед →</button>
+            </div>
+            
+            <div class="table-container">
+                <table id="vmsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Статус</th>
+                            <th>Гостевая ОС</th>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Хранилище</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="7">Загрузка данных...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="./routes/api.js"></script>
+    <script src="./routes/dashboard.js"></script>
+</body>
+</html>

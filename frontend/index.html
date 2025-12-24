@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/login.css">
-    <title>Вход в систему</title>
+    <title>ESXi Monitor - Вход</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="login-page">
     <div class="login-container">
@@ -13,38 +13,38 @@
                 <h1>VM Мониторинг</h1>
                 <p>Система мониторинга ESXi хостов</p>
             </div>
-
+            
             <form id="loginForm">
                 <div class="input-group">
-                    <label for="login">Email:</label>
-                    <input 
-                        type="email" 
-                        id="login" 
-                        placeholder="Введите адрес почты"
+                    <label for="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="admin@esxi.local"
                         required
                     >
                 </div>
-
+                
                 <div class="input-group">
                     <label for="password">Пароль:</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        placeholder="Введите пароль"
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="admin123"
                         required
                     >
                 </div>
-
+                
                 <div id="errorMessage" class="error-message"></div>
-
+                
                 <button type="submit" class="login-btn">
                     Войти в систему
                 </button>
             </form>
         </div>
     </div>
-
-    <script src="../routes/api.js" type="module"></script>
-    <script src="../routes/auth.js" type="module"></script>
+    
+    <script src="./routes/api.js"></script>
+    <script src="./routes/login.js"></script>
 </body>
 </html>

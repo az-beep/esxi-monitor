@@ -6,10 +6,10 @@ class ESXiClient {
         this.config = {
             host: '192.168.56.10',
             username: 'root',
-            password: 'password', // ваш пароль
+            password: 'password',
             port: 22,
             readyTimeout: 15000,
-            tryKeyboard: true // ESXi часто требует keyboard-interactive
+            tryKeyboard: true 
         };
         this.connected = false;
     }

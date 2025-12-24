@@ -49,26 +49,7 @@ class TelegramNotifier {
         const icon = icons[type] || '⚪';
         
         const templates = {
-            // Существующие шаблоны
-            login: `${icons.login} <b>Вход пользователя</b>\n` +
-                   `Пользователь: ${data.email}\n` +
-                   `Роль: ${data.role}\n` +
-                   `IP: ${data.ip || 'Н/Д'}\n` +
-                   `Время: ${new Date().toLocaleString()}`,
             
-            user_created: `${icons.success} <b>Создан новый пользователь</b>\n` +
-                         `Пользователь: ${data.email}\n` +
-                         `Роль: ${data.role}\n` +
-                         `Создал: ${data.createdBy}\n` +
-                         `Время: ${new Date().toLocaleString()}`,
-            
-            user_deleted: `${icons.critical} <b>Удален пользователь</b>\n` +
-                         `Пользователь: ${data.email}\n` +
-                         `Роль: ${data.role}\n` +
-                         `Удалил: ${data.deletedBy}\n` +
-                         `Время: ${new Date().toLocaleString()}`,
-            
-            // НОВЫЕ ШАБЛОНЫ ДЛЯ ESXi
             esxi_config: `${icons.esxi} <b>Получена конфигурация ESXi</b>\n` +
                         `Хост: <code>${data.host}</code>\n` +
                         `Версия: ${data.version}\n` +
