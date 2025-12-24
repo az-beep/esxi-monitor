@@ -58,12 +58,12 @@ function getActionText(action) {
         'auth_failure': 'Ошибка аутентификации',
         'other': 'Другое'
     };
-    return types[action]  action;
+    return types[action] || action;
 }
 
 function getStatusClass(action) {
     if (action.includes('success')) return 'status-running';
-    if (action.includes('failed')  action.includes('failure')) return 'status-stopped';
+    if (action.includes('failed') || action.includes('failure')) return 'status-stopped';
     return 'status-unknown';
 }
 
@@ -92,26 +92,26 @@ async function loadHostConfig() {
     try {
         const config = await api.getESXiConfig();
         
-        const html = 
-            `<div class="config-item">
+        const html = `
+            <div class="config-item">
                 <div class="config-label">Хост</div>
-                <div class="config-value">${config.hostname  'N/A'}</div>
+                <div class="config-value">${config.hostname || 'N/A'}</div>
             </div>
             <div class="config-item">
                 <div class="config-label">Версия ESXi</div>
-                <div class="config-value">${config.version  'N/A'}</div>
+                <div class="config-value">${config.version || 'N/A'}</div>
             </div>
             <div class="config-item">
                 <div class="config-label">CPU</div>
-                <div class="config-value">${config.cpu?.cores  0} ядер</div>
+                <div class="config-value">${config.cpu?.cores || 0} ядер</div>
             </div>
             <div class="config-item">
                 <div class="config-label">Память</div>
-                <div class="config-value">${config.memory?.size  'N/A'}</div>
+                <div class="config-value">${config.memory?.size || 'N/A'}</div>
             </div>
             <div class="config-item">
                 <div class="config-label">Время работы</div>
-                <div class="config-value">${config.uptime  'N/A'}</div>
+                <div class="config-value">${config.uptime || 'N/A'}</div>
             </div>
         `;
         
@@ -129,15 +129,15 @@ async function loadHostMetrics() {
         const html = `
             <div class="config-item">
                 <div class="config-label">Загрузка CPU</div>
-                <div class="config-value">${metrics.cpuUsage?.toFixed(1)  0}%</div>
+                <div class="config-value">${metrics.cpuUsage?.toFixed(1) || 0}%</div>
             </div>
             <div class="config-item">
                 <div class="config-label">Использование RAM</div>
-                <div class="config-value">${metrics.memoryUsage?.toFixed(1)  0}%</div>
+                <div class="config-value">${metrics.memoryUsage?.toFixed(1) || 0}%</div>
             </div>
             <div class="config-item">
                 <div class="config-label">Время работы</div>
-                <div class="config-value">${metrics.uptime  'N/A'}</div>
+                <div class="config-value">${metrics.uptime || 'N/A'}</div>
             </div>
             <div class="config-item">
                 <div class="config-label">Обновлено</div>
@@ -177,9 +177,9 @@ function renderAuditTable() {
     }
     
     const rows = pageLogs.map(log => {
-        const timestamp = log.timestamp  'N/A';
-        const user = log.user  'unknown';
-        const ip = log.ip  'N/A';
+        const timestamp = log.timestamp || 'N/A';
+        const user = log.user || 'unknown';
+        const ip = log.ip || 'N/A';
         const action = getActionText(log.action);
         const statusClass = getStatusClass(log.action);
         
@@ -230,9 +230,9 @@ function renderVMsTable() {
                 <td>${vm.id}</td>
                 <td><strong>${vm.name}</strong></td>
                 <td><span class="status-badge ${statusClass}">${vm.status}</span></td>
-                <td>${vm.guestOS  'Unknown'}</td>
-                <td>${vm.cpu  2} ядер</td>
-                <td>${vm.ram  2048} MB</td>
+                <td>${vm.guestOS ||'Unknown'}</td>
+                <td>${vm.cpu || 2} ядер</td>
+                <td>${vm.ram || 2048} MB</td>
                 <td>${vm.storage || 50} GB</td>
             </tr>
         `;

@@ -63,19 +63,12 @@ services:
     build: ./frontend
     container_name: vm-frontend
     ports:
-      - "443:443"
-      - "80:80"
+      - "3000:3000" 
     volumes:
-      - ./frontend:/usr/share/nginx/html
-      - ./nginx-ssl:/etc/nginx/ssl
+      - ./frontend:/app  
     depends_on:
       backend:
         condition: service_healthy
-    command: >
-      sh -c "
-      echo 'Starting nginx...';
-      nginx -g 'daemon off;'
-      "
 
 volumes:
   pgdata:

@@ -1,12 +1,11 @@
-FROM nginx:alpine
+FROM node:18-alpine
 
-# Копировать файлы фронтенда
-COPY . /usr/share/nginx/html
+WORKDIR /index
 
-# Копировать конфигурацию nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY . .
 
-# Копировать SSL сертификаты
-RUN mkdir -p /etc/nginx/ssl
+RUN npm install -g http-server
 
-EXPOSE 80 443
+EXPOSE 3000
+
+CMD ["http-server", ".", "-p", "3000", "--cors", "-c-1"]

@@ -35,7 +35,7 @@ const EsxiHost = sequelize.define("EsxiHost", {
         type: DataTypes.STRING,
     },
     uptime: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
     },
     lastSync: {
         type: DataTypes.DATE,

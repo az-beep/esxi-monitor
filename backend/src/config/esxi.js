@@ -6,7 +6,7 @@ class ESXiClient {
         this.config = {
             host: '192.168.56.10',
             username: 'root',
-            password: 'password',
+            password: 'An0nas_',
             port: 22,
             readyTimeout: 15000,
             tryKeyboard: true 

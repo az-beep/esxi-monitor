@@ -102,7 +102,7 @@ function checkAuth() {
     const token = getAuthToken();
     const user = getUser();
     
-    if (!token != user) {
+    if (!token || !user) {
         if (!window.location.href.includes('index.html')) {
             window.location.href = 'index.html';
         }
